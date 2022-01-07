@@ -1,4 +1,5 @@
 package com.ysa.admin.controller;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXToggleButton;
 import com.ysa.admin.controller.tools.YSAalert;
 import com.ysa.admin.dao.*;
@@ -395,45 +396,71 @@ public class MainController {
     @FXML
     private Label Home;
     @FXML
-    private Button btn3;
+    private Button btn1TahunAjaran;
+
+    @FXML
+    private Button btn2TahunAjaran;
+
     @FXML
     private Button btnAddInputGuru;
+
     @FXML
     private Button btnAddInputMataPelajaranBaru;
+
     @FXML
     private Button btnAddInputSiswa;
+
     @FXML
     private Button btnAddMasukkanSiswa;
+
     @FXML
     private Button btnAddPendaftaranJadwal;
+
     @FXML
-    private Button btnAddTahunAjaran;
-    @FXML
-    private Button btnCetakAbsensi;
-    @FXML
-    private Button btnCetakInformasi;
+    private Button btnCetakFormulirInputSiswa;
+
     @FXML
     private Button btnClose;
+
     @FXML
     private Button btnCredit;
+
     @FXML
     private Button btnDeleteInputGuru;
+
     @FXML
     private Button btnDeleteInputSiswa;
+
     @FXML
     private Button btnDeleteMasukkanSiswa;
+
     @FXML
     private Button btnEditInputGuru;
+
     @FXML
     private Button btnEditInputMataPelajaranBaru;
+
     @FXML
     private Button btnEditInputSiswa;
+
     @FXML
     private Button btnEditPendaftaranJadwal;
+
+    @FXML
+    private Button btnInputFormulirInputSiswa;
+
+    @FXML
+    private Button btnResetPendaftaranJadwal;
+
+    @FXML
+    private JFXToggleButton btnToggle;
+
     @FXML
     private Button btnTulisan1;
+
     @FXML
     private Button btnTulisan2;
+
     @FXML
     private Button btnTulisan3;
     @FXML
@@ -446,12 +473,7 @@ public class MainController {
     private TableColumn<?, ?> column4=new TableColumn<>();
     @FXML
     private TableColumn<?, ?> column5=new TableColumn<>();
-    @FXML
-    private ComboBox<Jadwal> comboBoxJadwal;
-    @FXML
-    private ComboBox<Kelas> comboBoxKelas;
-    @FXML
-    private ComboBox<Matpel> comboBoxMataPelajaran;
+
     @FXML
     private Label judulBesar;
     @FXML
@@ -474,8 +496,7 @@ public class MainController {
     private Tab pane2Tab2;
     @FXML
     private TabPane pane3;
-    @FXML
-    private JFXToggleButton btnToggle;
+
     @FXML
     private Tab pane3Tab1;
     @FXML
@@ -508,6 +529,20 @@ public class MainController {
     private TextField txtNamaOrangtuaInputSiswa;
     @FXML
     private TextField txtNamaOrantuaDetil;
+    @FXML
+    private JFXComboBox<Jadwal> comboBoxJadwal;
+
+    @FXML
+    private JFXComboBox<Kelas> comboBoxKelas;
+
+    @FXML
+    private JFXComboBox<Matpel> comboBoxMataPelajaran;
+
+    @FXML
+    private JFXComboBox<?> cmbMasukkanSiswaKeKelas;
+
+    @FXML
+    private JFXComboBox<?> cmbToolKelas;
     @FXML
     private TextField txtNamaSiswa;
     @FXML
