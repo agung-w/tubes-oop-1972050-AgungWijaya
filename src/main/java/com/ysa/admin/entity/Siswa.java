@@ -88,4 +88,9 @@ public class Siswa {
     public int hashCode() {
         return Objects.hash(id, namasiswa, alamat, namaorangtua, createdAt, updatedAt);
     }
+
+    @Override
+    public String toString() {
+        return namasiswa;
+    }
 }

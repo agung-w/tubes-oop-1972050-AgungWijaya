@@ -40,7 +40,26 @@ public class KelasmatpelDao implements daoInterface<Kelasmatpel>{
 
     @Override
     public int updateData(Kelasmatpel data) {
-        return daoInterface.super.updateData(data);
+        int res=0;
+        Session s=HibernateUtil.getSession();
+        Transaction t=s.beginTransaction();
+        try {
+            res=s.createStoredProcedureQuery("updatekelasmatpel")
+                    .registerStoredProcedureParameter(1,Integer.class, ParameterMode.IN)
+                    .registerStoredProcedureParameter(2,Integer.class, ParameterMode.IN)
+                    .registerStoredProcedureParameter(3,Integer.class,ParameterMode.IN)
+                    .registerStoredProcedureParameter(4,Integer.class,ParameterMode.IN)
+                    .setParameter(1,data.getId())
+                    .setParameter(2,data.getMatpelByMatpelId().getId())
+                    .setParameter(3,data.getKelasByKelasId().getId())
+                    .setParameter(4,data.getJadwalByJadwalId().getId())
+                    .executeUpdate();
+            t.commit();
+        }catch (HibernateException e){
+            t.rollback();
+        }
+        s.close();
+        return res;
     }
 
     @Override

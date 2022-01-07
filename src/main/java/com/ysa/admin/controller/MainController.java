@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXToggleButton;
 import com.ysa.admin.controller.tools.YSAalert;
 import com.ysa.admin.dao.*;
 import com.ysa.admin.entity.*;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -14,6 +15,8 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -39,7 +42,53 @@ public class MainController {
      * ===================================TOOLS=======================================
      */
     private Stage new_stage = new Stage();
+    private int selectedid;
+    private int selectedsisid;
     public void initialize(){
+        btnEditPendaftaranJadwal.setDisable(true);
+        tableMain.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observableValue, Object o, Object t1) {
+                if (tableMain != null){
+                    if(tableMain.getSelectionModel().getSelectedItem()!=null){
+                        if (tableMain.getSelectionModel().getSelectedItem().getClass().getName().equals("com.ysa.admin.entity.Jadwal")) {
+                            comboBoxJadwal.getSelectionModel().select((Jadwal) tableMain.getSelectionModel().getSelectedItem());
+                        }else if(tableMain.getSelectionModel().getSelectedItem().getClass().getName().equals("com.ysa.admin.entity.Siswa")) {
+                            Siswa s=(Siswa) tableMain.getSelectionModel().getSelectedItem();
+                            txtNamaSiswa.setText(s.getNamasiswa());
+                            selectedsisid=s.getId();
+                            txtNamaInputSiswa.setText(s.getNamasiswa());
+                            txtAlamatInputSiswa.setText(s.getAlamat());
+                            txtNamaOrangtuaInputSiswa.setText(s.getNamaorangtua());
+                        }else if (tableMain.getSelectionModel().getSelectedItem().getClass().getName().equals("com.ysa.admin.entity.Kelas")) {
+                            comboBoxKelas1.getSelectionModel().select((Kelas) tableMain.getSelectionModel().getSelectedItem());
+                            comboBoxToolKelas.getSelectionModel().select((Kelas) tableMain.getSelectionModel().getSelectedItem());
+                        }else if (tableMain.getSelectionModel().getSelectedItem().getClass().getName().equals("com.ysa.admin.entity.Kelasmatpel")) {
+                            Kelasmatpel kelasmatpel= (Kelasmatpel) tableMain.getSelectionModel().getSelectedItem();
+                            comboBoxKelas.getSelectionModel().select(kelasmatpel.getKelasByKelasId());
+                            comboBoxMataPelajaran.getSelectionModel().select(kelasmatpel.getMatpelByMatpelId());
+                            comboBoxJadwal.getSelectionModel().select(kelasmatpel.getJadwalByJadwalId());
+                            selectedid=kelasmatpel.getId();
+                            btnAddPendaftaranJadwal.setDisable(true);
+                            btnEditPendaftaranJadwal.setDisable(false);
+                        }else if (tableMain.getSelectionModel().getSelectedItem().getClass().getName().equals("com.ysa.admin.entity.Guru")) {
+                            Guru g= (Guru) tableMain.getSelectionModel().getSelectedItem();
+                            txtNamaGuruInputMataPelajaranBaru.setText(g.getNamaguru());
+                            txtNamaGuruInputGuru.setText(g.getNamaguru());
+                            txtJabatanInputGuru.setText(g.getJabatan());
+                        }else if (tableMain.getSelectionModel().getSelectedItem().getClass().getName().equals("com.ysa.admin.entity.SiswaHasKelas")) {
+                            SiswaHasKelas s=(SiswaHasKelas) tableMain.getSelectionModel().getSelectedItem();
+                            txtNamaSiswa.setText(String.valueOf(s.getSiswaId()));
+                            comboBoxKelas1.getSelectionModel().select(s.getKelasByKelasId());
+                            selectedsisid=s.getSiswaId();
+                        }
+                    }
+                }
+            }
+        });
+    }
+    @FXML
+    private void modalAddKelas(){
 
     }
     /**
@@ -55,7 +104,7 @@ public class MainController {
     }
 
     @FXML
-    void shwHome(MouseEvent event) {
+    void shwHome() {
         judulBesar.setText("Tugas Besar PBO 2");
         pnlstatus.setBackground(new Background(new BackgroundFill(Color.rgb(101,	112,	94), CornerRadii.EMPTY, Insets.EMPTY)));
         Home.toFront();
@@ -69,9 +118,8 @@ public class MainController {
     @FXML
     private void addSiswaKelas(){
         SiswaHasKelas x=new SiswaHasKelas();
-        Siswa s=(Siswa) tableMain.getSelectionModel().getSelectedItem();
-        Kelas k= comboBoxKelas.getSelectionModel().getSelectedItem();
-        x.setSiswaId(s.getId());
+        Kelas k= comboBoxKelas1.getSelectionModel().getSelectedItem();
+        x.setSiswaId(selectedsisid);
         x.setKelasId(k.getId());
         if(siswaHasKelasDao.addData(x)==1){
             ysa.showAlertInf("Penambahan berhasil","Success");
@@ -82,6 +130,25 @@ public class MainController {
             setTableToKelasJadwal();
         }
         comboBoxKelas1.getSelectionModel().select(1);
+        resetPane3();
+    }
+    @FXML
+    private void deleteSiswaKelas(){
+        SiswaHasKelas x=new SiswaHasKelas();
+        Kelas k= comboBoxKelas1.getSelectionModel().getSelectedItem();
+        x.setSiswaId(selectedsisid);
+        x.setKelasId(k.getId());
+        if(siswaHasKelasDao.delData(x)==1){
+            ysa.showAlertInf("Penambahan berhasil","Success");
+            setTableToKelasJadwal();
+            refreshData();
+        }else{
+            ysa.showAlertErr("Gagal Menambahkan data");
+            setTableToKelasJadwal();
+        }
+        comboBoxKelas1.getSelectionModel().select(1);
+        resetPane3();
+
     }
     @FXML
     private void addKelasJadwal(){
@@ -91,26 +158,51 @@ public class MainController {
         x.setJadwalByJadwalId(comboBoxJadwal.getSelectionModel().getSelectedItem());
         if(kelasmatpelDao.addData(x)==1){
             ysa.showAlertInf("Penambahan berhasil","Success");
-            setTableToKelasJadwal();
             refreshData();
         }else{
             ysa.showAlertErr("Gagal Menambahkan data");
-            setTableToKelasJadwal();
         }
-        comboBoxKelas.requestFocus();
+        setTableToKelasJadwal();
+        resetPane1();
     }
     @FXML
     private void updateKelasJadwal(){
         Kelasmatpel x=new Kelasmatpel();
+        x.setId(selectedid);
         x.setKelasByKelasId(comboBoxKelas.getSelectionModel().getSelectedItem());
         x.setMatpelByMatpelId(comboBoxMataPelajaran.getSelectionModel().getSelectedItem());
         x.setJadwalByJadwalId(comboBoxJadwal.getSelectionModel().getSelectedItem());
         if(kelasmatpelDao.updateData(x)==1){
-            ysa.showAlertInf("Update berhasil","Berhasil");
-            setTableToKelasJadwal();
+            ysa.showAlertInf("Data Berhasil Di ubah ","Success");
             refreshData();
+        }else{
+            ysa.showAlertInf("Tidak ada perubahan data","No data Changed");
         }
+        setTableToKelasJadwal();
+        resetPane1();
     }
+    @FXML
+    private void printFormSiswa(){
+
+    }
+    @FXML
+    private void inputFormSiswa(){
+
+    }
+    @FXML
+    private void addSiswa(){
+
+    }
+    @FXML
+    private void deleteSiswa(){
+
+    }
+    @FXML
+    private void updateSiswa(){
+
+    }
+
+
     @FXML
     void shwClose(ActionEvent event) {
         Home.getScene().getWindow().hide();
@@ -119,6 +211,32 @@ public class MainController {
     @FXML
     void shwbtn1(ActionEvent event) {
 
+    }
+    @FXML
+    private void resetPane2(){
+        txtEmailInputGuru.clear();
+        txtJabatanInputGuru.clear();
+        txtMataPelajaranInputMataPelajaranBaru.clear();
+        txtNamaGuruInputGuru.clear();
+        txtNamaGuruInputMataPelajaranBaru.clear();
+        txtPasswordInputGuru.clear();
+    }
+    @FXML
+    private void resetPane1(){
+        comboBoxToolKelas.getSelectionModel().clearSelection();
+        comboBoxKelas.getSelectionModel().clearSelection();
+        comboBoxJadwal.getSelectionModel().clearSelection();
+        comboBoxMataPelajaran.getSelectionModel().clearSelection();
+        btnEditPendaftaranJadwal.setDisable(true);
+        btnAddPendaftaranJadwal.setDisable(false);
+    }
+    @FXML
+    private void resetPane3(){
+        txtNamaSiswa.clear();
+        txtAlamatInputSiswa.clear();
+        txtNamaInputSiswa.clear();
+        txtNamaOrangtuaInputSiswa.clear();
+        comboBoxKelas1.getSelectionModel().clearSelection();
     }
     /**
      * ===================================ON ACTIONS=======================================
@@ -129,51 +247,22 @@ public class MainController {
      */
     @FXML
     private void comboDetail(){
-        tableMain.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue observableValue, Object o, Object t1) {
-                if (tableMain != null){
-                    if(tableMain.getSelectionModel().getSelectedItem()!=null){
-                        if (tableMain.getSelectionModel().getSelectedItem().getClass().getName().equals("com.ysa.admin.entity.Jadwal")) {
-                            comboBoxJadwal.getSelectionModel().select((Jadwal) tableMain.getSelectionModel().getSelectedItem());
-                        }else if(tableMain.getSelectionModel().getSelectedItem().getClass().getName().equals("com.ysa.admin.entity.Siswa")) {
-                            Siswa s=(Siswa) tableMain.getSelectionModel().getSelectedItem();
-                            txtNamaSiswa.setText(s.getNamasiswa());
-                        }else if (tableMain.getSelectionModel().getSelectedItem().getClass().getName().equals("com.ysa.admin.entity.Kelas")) {
-                            comboBoxKelas1.getSelectionModel().select((Kelas) tableMain.getSelectionModel().getSelectedItem());
-                        }
-                    }
-                }
-            }
-        });
         if(comboBoxJadwal.isFocused()){
             setTableToJadwal();
         }else if (comboBoxKelas1.isFocused()){
             setTableToKelas();
         }else if(txtNamaSiswa.isFocused()){
             setTableToSiswa();
-        }
-    }
-    @FXML
-    void paneTabChange(Event event){
-        if (pane1Tab1.isSelected()){
+        }else if(comboBoxToolKelas.isFocused()){
+            setTableToKelas();
+        }else if(comboBoxKelas.isFocused()){
             setTableToKelasJadwal();
-            comboBoxMataPelajaran.setItems(matpelList);
-            comboBoxKelas.setItems(kelasList);
-            comboBoxJadwal.setItems(jadwalList);
-        }else if (pane1Tab2.isSelected()){
-            setTableToKelas();
-            comboBoxKelas1.setItems(kelasList);
-        }else if (pane1Tab3.isSelected()){
-            setTableToKelas();
-        }else if (pane2Tab1.isSelected()){
-            setTableToKelas();
-        }else if (pane2Tab2.isSelected()){
-            setTableToKelas();
-        }else if (pane3Tab1.isSelected()){
-            setTableToKelas();
-        }else if (pane3Tab2.isSelected()){
-            setTableToKelas();
+        }else if(comboBoxMataPelajaran.isFocused()) {
+            setTableToKelasJadwal();
+        }else if(txtNamaGuruInputMataPelajaranBaru.isFocused()){
+            setTableToGuru();
+        } else if(txtNamaInputSiswa.isFocused()){
+            setTableToSiswa();
         }
     }
     @FXML
@@ -183,22 +272,24 @@ public class MainController {
         pane3.setVisible(false);
         paneStart.setVisible(false);
         creditPage.setVisible(false);
+        resetPane1();
+        resetPane2();
+        resetPane3();
         if(event.getSource() == btnTulisan1){
             judulBesar.setText("Administrasi Kelas");
             pnlstatus.setBackground(new Background(new BackgroundFill(Color.rgb(134, 186, 148), CornerRadii.EMPTY, Insets.EMPTY)));
             pane1.setVisible(true);
-            pane1.getSelectionModel().select(0);
             setTableToKelasJadwal();
         }else if(event.getSource() == btnTulisan2) {
             judulBesar.setText("Panel Guru");
             pnlstatus.setBackground(new Background(new BackgroundFill(Color.rgb(134, 186, 179), CornerRadii.EMPTY, Insets.EMPTY)));
             pane2.setVisible(true);
-
+            setTableToMatpel();
         }else if(event.getSource() == btnTulisan3){
-            resetTable();
             judulBesar.setText("Panel Siswa");
             pnlstatus.setBackground(new Background(new BackgroundFill(Color.rgb(153, 186, 134), CornerRadii.EMPTY, Insets.EMPTY)));
             pane3.setVisible(true);
+            setTableToSiswaKelas();
         }else{
             judulBesar.setText("Credit");
             pnlstatus.setBackground(new Background(new BackgroundFill(Color.rgb(101,	112,	94), CornerRadii.EMPTY, Insets.EMPTY)));
@@ -206,13 +297,54 @@ public class MainController {
             tableMain.setVisible(false);
         }
     }
+    @FXML
+    void paneTabChange(){
+        if (pane1!=null){
+            if (comboBoxJadwal.getSelectionModel().getSelectedItem()!=null){
+                resetPane1();
+            }
+            if (pane1Tab1.isSelected()){
+                setTableToKelasJadwal();
+                comboBoxMataPelajaran.setItems(matpelList);
+                comboBoxKelas.setItems(kelasList);
+                comboBoxJadwal.setItems(jadwalList);
+            }else if (pane1Tab2.isSelected()){
+                setTableToKelas();
+                comboBoxToolKelas.setItems(kelasList);
+            }
+        }
+    }
+    @FXML
+    void pane2TabChange(){
+        if (pane2!=null){
+            if (txtEmailInputGuru!=null){
+                resetPane2();
+            }
+            if (pane2Tab1.isSelected()){
+                setTableToMatpel();
+            }else if (pane2Tab2.isSelected()){
+                setTableToGuru();
+            }
+        }
+    }
+    @FXML
+    void pane3TabChange(){
+        if (pane3!=null){
+            if (txtNamaInputSiswa!=null){
+                resetPane3();
+            }
+            if (pane3Tab1.isSelected()){
+                setTableToSiswaKelas();
+                comboBoxKelas1.setItems(kelasList);
+            }else if (pane3Tab2.isSelected()){
+                setTableToSiswa();
+            }
+        }
+    }
 
     /**
      * ===================================LISTENER=======================================
      */
-
-
-
 
 
     /**
@@ -256,6 +388,15 @@ public class MainController {
         column1.setPrefWidth(100.0);column2.setPrefWidth(150.0);column3.setPrefWidth(100);column4.setPrefWidth(150);column5.setPrefWidth(100);
         column1.setText("");column2.setText("");column3.setText("");column4.setText("");column5.setText("");
     }
+    private void setTableToMatpel(){
+        resetTable();tableMain.setVisible(true);tableMain.setItems(matpelList);
+        column1.setText("No");column2.setText("Mata Pelajaran");column3.setText("Pengajar");
+        column2.setPrefWidth(200);
+        column3.setPrefWidth(200);
+        column1.setCellValueFactory(new PropertyValueFactory<>("Id"));
+        column2.setCellValueFactory(new PropertyValueFactory<>("Namamatpel"));
+        column3.setCellValueFactory(new PropertyValueFactory<>("GuruByGuruId"));
+    }
     private void setTableToKelas(){
         resetTable();tableMain.setVisible(true);tableMain.setItems(kelasList);
         column1.setText("No");column2.setText("Kelas");column3.setText("Tahun Ajaran");column4.setText("Wali Kelas");column5.setText("Status");
@@ -274,8 +415,10 @@ public class MainController {
         column4.setCellValueFactory(new PropertyValueFactory<>("guruByGuruId"));
     }
     private void setTableToGuru(){
+
         resetTable();tableMain.setVisible(true);tableMain.setItems(guruList);
         column1.setText("ID Guru");column2.setText("");column3.setText("Nama Guru");column4.setText("Jabatan");
+        column2.setPrefWidth(70);column3.setPrefWidth(200);column4.setPrefWidth(100);
         column1.setCellValueFactory(new PropertyValueFactory<>("Id"));
         column2.setCellValueFactory(new PropertyValueFactory<>("Fotoprofil"));
         column3.setCellValueFactory(new PropertyValueFactory<>("Namaguru"));
@@ -290,31 +433,31 @@ public class MainController {
         column4.setCellValueFactory(new PropertyValueFactory<>("Namaorangtua"));
     }
     private void setTableToJadwalDet(){
-        resetTable();
-        tableMain.setVisible(true);
+        resetTable();tableMain.setVisible(true);tableMain.setItems(jadwaldetList);
         column1.setText("Kode Jadwal");column2.setText("Hari");column3.setText("Jam Mulai");column4.setText("Jam Selesai");
-        tableMain.setItems(jadwaldetList);
         column1.setCellValueFactory(new PropertyValueFactory<>("JadwalByJadwalId"));
         column2.setCellValueFactory(new PropertyValueFactory<>("Hari"));
         column3.setCellValueFactory(new PropertyValueFactory<>("Jammulai"));
         column4.setCellValueFactory(new PropertyValueFactory<>("Jamselesai"));
     }
     private void setTableToJadwal(){
-        resetTable();
-        tableMain.setVisible(true);
+        resetTable();tableMain.setVisible(true);tableMain.setItems(jadwalList);
         column1.setText("Kode Jadwal");column2.setText("Jadwal");column2.setPrefWidth(500);
-        tableMain.setItems(jadwalList);
         column1.setCellValueFactory(new PropertyValueFactory<>("Namajadwal"));
         column2.setCellValueFactory(new PropertyValueFactory<>("JadwaldetsById"));
     }
     private void setTableToKelasJadwal(){
-        resetTable();
-        tableMain.setVisible(true);tableMain.setItems(kelasmatpelList);
+        resetTable();tableMain.setVisible(true);tableMain.setItems(kelasmatpelList);
         column1.setText("Kelas");column2.setText("Mata Pelajaran");column3.setText("Jadwal");
         column1.setCellValueFactory(new PropertyValueFactory<>("KelasByKelasId"));
         column2.setCellValueFactory(new PropertyValueFactory<>("MatpelByMatpelId"));
         column3.setCellValueFactory(new PropertyValueFactory<>("JadwalByJadwalId"));
-
+    }
+    private void setTableToSiswaKelas(){
+        resetTable();tableMain.setVisible(true);tableMain.setItems(siswaHasKelasList);
+        column1.setText("Nama Siswa");column2.setText("Kelas");column1.setPrefWidth(250);column2.setPrefWidth(250);
+        column1.setCellValueFactory(new PropertyValueFactory<>("SiswaBySiswaId"));
+        column2.setCellValueFactory(new PropertyValueFactory<>("KelasByKelasId"));
     }
     /**
      *===========================================================================
@@ -397,70 +540,48 @@ public class MainController {
     private Label Home;
     @FXML
     private Button btn1TahunAjaran;
-
     @FXML
     private Button btn2TahunAjaran;
-
     @FXML
     private Button btnAddInputGuru;
-
     @FXML
     private Button btnAddInputMataPelajaranBaru;
-
     @FXML
     private Button btnAddInputSiswa;
-
     @FXML
     private Button btnAddMasukkanSiswa;
-
     @FXML
     private Button btnAddPendaftaranJadwal;
-
     @FXML
     private Button btnCetakFormulirInputSiswa;
-
     @FXML
     private Button btnClose;
-
     @FXML
     private Button btnCredit;
-
     @FXML
     private Button btnDeleteInputGuru;
-
     @FXML
     private Button btnDeleteInputSiswa;
-
     @FXML
     private Button btnDeleteMasukkanSiswa;
-
     @FXML
     private Button btnEditInputGuru;
-
     @FXML
     private Button btnEditInputMataPelajaranBaru;
-
     @FXML
     private Button btnEditInputSiswa;
-
     @FXML
     private Button btnEditPendaftaranJadwal;
-
     @FXML
     private Button btnInputFormulirInputSiswa;
-
     @FXML
     private Button btnResetPendaftaranJadwal;
-
     @FXML
     private JFXToggleButton btnToggle;
-
     @FXML
     private Button btnTulisan1;
-
     @FXML
     private Button btnTulisan2;
-
     @FXML
     private Button btnTulisan3;
     @FXML
@@ -473,7 +594,6 @@ public class MainController {
     private TableColumn<?, ?> column4=new TableColumn<>();
     @FXML
     private TableColumn<?, ?> column5=new TableColumn<>();
-
     @FXML
     private Label judulBesar;
     @FXML
@@ -482,8 +602,6 @@ public class MainController {
     private Tab pane1Tab1;
     @FXML
     private Tab pane1Tab2;
-    @FXML
-    private Tab pane1Tab3;
     @FXML
     private TabPane pane2;
     @FXML
@@ -496,7 +614,6 @@ public class MainController {
     private Tab pane2Tab2;
     @FXML
     private TabPane pane3;
-
     @FXML
     private Tab pane3Tab1;
     @FXML
@@ -508,8 +625,6 @@ public class MainController {
     @FXML
     private TableView tableMain=new TableView();
     @FXML
-    private TextField txtAlamatDetil;
-    @FXML
     private TextField txtAlamatInputSiswa;
     @FXML
     private TextField txtEmailInputGuru;
@@ -517,8 +632,6 @@ public class MainController {
     private TextField txtJabatanInputGuru;
     @FXML
     private TextField txtMataPelajaranInputMataPelajaranBaru;
-    @FXML
-    private TextField txtNamaDetil;
     @FXML
     private TextField txtNamaGuruInputGuru;
     @FXML
@@ -528,21 +641,15 @@ public class MainController {
     @FXML
     private TextField txtNamaOrangtuaInputSiswa;
     @FXML
-    private TextField txtNamaOrantuaDetil;
-    @FXML
     private JFXComboBox<Jadwal> comboBoxJadwal;
-
     @FXML
     private JFXComboBox<Kelas> comboBoxKelas;
-
     @FXML
     private JFXComboBox<Matpel> comboBoxMataPelajaran;
-
     @FXML
-    private JFXComboBox<?> cmbMasukkanSiswaKeKelas;
-
+    private JFXComboBox<Kelas> comboBoxKelas1;
     @FXML
-    private JFXComboBox<?> cmbToolKelas;
+    private JFXComboBox<Kelas> comboBoxToolKelas;
     @FXML
     private TextField txtNamaSiswa;
     @FXML
@@ -551,8 +658,7 @@ public class MainController {
     private TextField txtTahunAjaran;
     @FXML
     private Pane creditPage;
-    @FXML
-    private ComboBox<Kelas> comboBoxKelas1;
+
     /**
      *
      */

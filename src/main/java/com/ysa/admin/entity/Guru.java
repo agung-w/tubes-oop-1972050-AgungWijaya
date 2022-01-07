@@ -1,5 +1,6 @@
 package com.ysa.admin.entity;
 
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +16,6 @@ public class Guru {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private String jabatan;
-
     @Id
     @Column(name = "id", nullable = false)
     public int getId() {
