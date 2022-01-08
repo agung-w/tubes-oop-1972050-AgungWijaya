@@ -21,8 +21,9 @@ public class SiswaHasKelasDao implements daoInterface<SiswaHasKelas>{
         Session s=HibernateUtil.getSession();
         Transaction t=s.beginTransaction();
         try {
-            res=s.createStoredProcedureQuery("storesiswakelas").registerStoredProcedureParameter(1,Integer.class, ParameterMode.IN)
-                    .registerStoredProcedureParameter(2,Integer.class, ParameterMode.IN)
+            res=s.createStoredProcedureQuery("storesiswakelas")
+            .registerStoredProcedureParameter(1,Integer.class, ParameterMode.IN)
+            .registerStoredProcedureParameter(2,Integer.class, ParameterMode.IN)
             .setParameter(1,data.getSiswaId())
             .setParameter(2,data.getKelasId()).executeUpdate();
             t.commit();
@@ -35,7 +36,21 @@ public class SiswaHasKelasDao implements daoInterface<SiswaHasKelas>{
 
     @Override
     public int delData(SiswaHasKelas data) {
-        return daoInterface.super.delData(data);
+        int res=0;
+        Session s=HibernateUtil.getSession();
+        Transaction t=s.beginTransaction();
+        try {
+            res=s.createStoredProcedureQuery("deletesiswakelas")
+                .registerStoredProcedureParameter(1,Integer.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(2,Integer.class, ParameterMode.IN)
+                .setParameter(1,data.getSiswaId())
+                .setParameter(2,data.getKelasId()).executeUpdate();
+            t.commit();
+        }catch (HibernateException e){
+            t.rollback();
+        }
+        s.close();
+        return res;
     }
 
     @Override
