@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ysa.admin.controller.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ysa.admin.controller.MainController">
    <children>
       <Pane fx:id="creditPage" layoutX="199.0" layoutY="96.0" prefHeight="502.0" prefWidth="1001.0">
          <children>
-            <Label layoutX="399.0" layoutY="54.0" text="CREATED BY ">
+            <Label layoutX="399.0" layoutY="54.0" text="%CREATEDBY.text">
                <font>
                   <Font size="35.0" />
                </font>
@@ -44,16 +54,15 @@
                   </Label>
                </children>
             </Pane>
-            <Button fx:id="btnTulisan1" mnemonicParsing="false" onAction="#changePage" prefHeight="41.0" prefWidth="205.0" text="Administrasi Kelas" textFill="WHITE">
+            <Button fx:id="btnTulisan1" mnemonicParsing="false" onAction="#changePage" prefHeight="41.0" prefWidth="205.0" text="%AdministrasiKelas.text" textFill="WHITE">
                <font>
                   <Font name="Heebo Regular" size="14.0" />
                </font>
                <stylesheets>
-
                   <URL value="@Style2.css" />
                </stylesheets>
             </Button>
-            <Button fx:id="btnTulisan2" mnemonicParsing="false" onAction="#changePage" prefHeight="41.0" prefWidth="205.0" text="Panel Guru" textFill="WHITE">
+            <Button fx:id="btnTulisan2" mnemonicParsing="false" onAction="#changePage" prefHeight="41.0" prefWidth="205.0" text="%PanelGuru.text" textFill="WHITE">
                <font>
                   <Font name="Heebo Regular" size="14.0" />
                </font>
@@ -65,7 +74,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="btnTulisan3" mnemonicParsing="false" onAction="#changePage" prefHeight="41.0" prefWidth="205.0" stylesheets="@Style2.css" text="Panel Siswa" textFill="WHITE">
+            <Button fx:id="btnTulisan3" mnemonicParsing="false" onAction="#changePage" prefHeight="41.0" prefWidth="205.0" stylesheets="@Style2.css" text="%PanelSiswa.text" textFill="WHITE">
                <font>
                   <Font name="Heebo Regular" size="14.0" />
                </font>
@@ -73,7 +82,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="btnCredit" mnemonicParsing="false" onAction="#changePage" prefHeight="41.0" prefWidth="205.0" text="Credit" textFill="WHITE">
+            <Button fx:id="btnCredit" mnemonicParsing="false" onAction="#changePage" prefHeight="41.0" prefWidth="205.0" text="%Credit.text" textFill="WHITE">
                <font>
                   <Font name="Heebo Regular" size="14.0" />
                </font>
@@ -93,7 +102,7 @@
       </VBox>
       <Pane fx:id="pnlstatus" layoutX="198.0" prefHeight="99.0" prefWidth="1003.0" style="-fx-background-color: #65705e;">
          <children>
-            <Label fx:id="judulBesar" layoutX="41.0" layoutY="42.0" text="Tugas Besar PBO 2" textAlignment="RIGHT" textFill="WHITE">
+            <Label fx:id="judulBesar" layoutX="41.0" layoutY="42.0" text="%TugasBesarPBO2.text" textAlignment="RIGHT" textFill="WHITE">
                <font>
                   <Font name="Heebo Regular" size="24.0" />
                </font>
@@ -118,20 +127,21 @@
             <URL value="@Style2.css" />
          </stylesheets>
       </TableView>
+      <Pane fx:id="paneStart" layoutX="199.0" layoutY="98.0" prefHeight="502.0" prefWidth="1001.0" style="-fx-background-color: #fff;" />
       <StackPane fx:id="stackPane" layoutX="199.0" layoutY="97.0" prefHeight="502.0" prefWidth="385.0">
          <children>
             <TabPane fx:id="pane1" prefHeight="502.0" prefWidth="301.0" style="-fx-background-color: #474747;" stylesheets="@Style2.css" tabClosingPolicy="UNAVAILABLE">
                <tabs>
-                  <Tab fx:id="pane1Tab1" onSelectionChanged="#paneTabChange" text="Pendaftaran Jadwal">
+                  <Tab fx:id="pane1Tab1" onSelectionChanged="#paneTabChange" text="%PendaftaranJadwal.text">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="473.0" prefWidth="306.0" style="-fx-background-color: #474747;">
                            <children>
-                              <Label layoutX="47.0" layoutY="46.0" text="Mata Pelajaran :" textFill="WHITE" />
-                              <Label layoutX="48.0" layoutY="96.0" text="Kelas                :" textFill="WHITE" />
-                              <Label layoutX="49.0" layoutY="149.0" text="Jadwal             :" textFill="WHITE" />
-                              <Button fx:id="btnEditPendaftaranJadwal" disable="true" layoutX="138.0" layoutY="209.0" mnemonicParsing="false" onAction="#updateKelasJadwal" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="Edit" />
-                              <Button fx:id="btnAddPendaftaranJadwal" layoutX="47.0" layoutY="209.0" mnemonicParsing="false" onAction="#addKelasJadwal" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="Add" />
-                              <Button fx:id="btnResetPendaftaranJadwal" layoutX="225.0" layoutY="209.0" mnemonicParsing="false" onAction="#resetPane1" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="Reset" />
+                              <Label layoutX="47.0" layoutY="46.0" text="%MataPelajaran.text" textFill="WHITE" />
+                              <Label layoutX="48.0" layoutY="96.0" text="%kelas.text" textFill="WHITE" />
+                              <Label layoutX="49.0" layoutY="149.0" text="%jadwal.text" textFill="WHITE" />
+                              <Button fx:id="btnEditPendaftaranJadwal" disable="true" layoutX="138.0" layoutY="209.0" mnemonicParsing="false" onAction="#updateKelasJadwal" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="%ubah.text" />
+                              <Button fx:id="btnAddPendaftaranJadwal" layoutX="47.0" layoutY="209.0" mnemonicParsing="false" onAction="#addKelasJadwal" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="%tambah.text" />
+                              <Button fx:id="btnResetPendaftaranJadwal" layoutX="225.0" layoutY="209.0" mnemonicParsing="false" onAction="#resetPane1" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="%ubahulang.text" />
                               <JFXComboBox fx:id="comboBoxKelas" layoutX="150.0" layoutY="92.0" onMouseClicked="#comboDetail" prefHeight="25.0" prefWidth="142.0" />
                               <JFXComboBox fx:id="comboBoxMataPelajaran" layoutX="150.0" layoutY="42.0" onMouseClicked="#comboDetail" prefHeight="25.0" prefWidth="173.0" />
                               <JFXComboBox fx:id="comboBoxJadwal" layoutX="150.0" layoutY="145.0" onMouseClicked="#comboDetail" prefHeight="25.0" prefWidth="134.0" />
@@ -139,17 +149,56 @@
                         </AnchorPane>
                      </content>
                   </Tab>
-                  <Tab fx:id="pane1Tab2" onSelectionChanged="#paneTabChange" text="Tools Kelas">
+                  <Tab fx:id="pane1Tab2" onSelectionChanged="#paneTabChange" text="%alatkelas.text">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Label layoutX="43.0" layoutY="71.0" text="Kelas" textFill="WHITE" />
-                              <Button fx:id="btn1TahunAjaran" disable="true" layoutX="171.0" layoutY="119.0" mnemonicParsing="false" onAction="#inactiveKelas" prefHeight="55.0" prefWidth="122.0" stylesheets="@Style2.css" text="Non Aktifan Kelas" />
+                              <Label layoutX="43.0" layoutY="71.0" text="%kelas.text" textFill="WHITE" />
+                              <Button fx:id="btn1TahunAjaran" disable="true" layoutX="171.0" layoutY="119.0" mnemonicParsing="false" onAction="#inactiveKelas" prefHeight="55.0" prefWidth="122.0" stylesheets="@Style2.css" text="%NonAktifanKelas.text" />
                               <JFXComboBox fx:id="comboBoxToolKelas" layoutX="98.0" layoutY="67.0" onMouseClicked="#comboDetail" prefHeight="25.0" prefWidth="134.0" />
-                              <Button fx:id="btn2TahunAjaran" disable="true" layoutX="43.0" layoutY="281.0" mnemonicParsing="false" onAction="#printDaftarHadir" prefHeight="55.0" prefWidth="142.0" stylesheets="@Style2.css" text="Cetak Daftar Hadir" />
-                              <Button fx:id="btn4TahunAjaran" layoutX="43.0" layoutY="357.0" mnemonicParsing="false" onAction="#modalAddKelas" prefHeight="55.0" prefWidth="116.0" stylesheets="@Style2.css" text="Tambah Kelas" />
-                              <Button fx:id="btn3TahunAjaran" disable="true" layoutX="43.0" layoutY="119.0" mnemonicParsing="false" onAction="#activeKelas" prefHeight="55.0" prefWidth="104.0" stylesheets="@Style2.css" text="Aktifkan Kelas" />
-                              <Button fx:id="btn5TahunAjaran" disable="true" layoutX="43.0" layoutY="209.0" mnemonicParsing="false" onAction="#detailKelas" prefHeight="55.0" prefWidth="142.0" stylesheets="@Style2.css" text="Lihat Detail Kelas" />
+                              <Button fx:id="btn2TahunAjaran" disable="true" layoutX="43.0" layoutY="281.0" mnemonicParsing="false" onAction="#printDaftarHadir" prefHeight="55.0" prefWidth="142.0" stylesheets="@Style2.css" text="%CetakDaftarHadir.text" />
+                              <Button fx:id="btn4TahunAjaran" layoutX="43.0" layoutY="357.0" mnemonicParsing="false" onAction="#modalAddKelas" prefHeight="55.0" prefWidth="116.0" stylesheets="@Style2.css" text="%TambahKelas.text" />
+                              <Button fx:id="btn3TahunAjaran" disable="true" layoutX="43.0" layoutY="119.0" mnemonicParsing="false" onAction="#activeKelas" prefHeight="55.0" prefWidth="104.0" stylesheets="@Style2.css" text="%AktifkanKelas.text" />
+                              <Button fx:id="btn5TahunAjaran" disable="true" layoutX="43.0" layoutY="209.0" mnemonicParsing="false" onAction="#detailKelas" prefHeight="55.0" prefWidth="142.0" stylesheets="@Style2.css" text="%LihatDetailKelas.text" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+            <TabPane fx:id="pane3" layoutX="10.0" layoutY="10.0" prefHeight="233.0" prefWidth="800.0" style="-fx-background-color: #474747;" stylesheets="@Style2.css" tabClosingPolicy="UNAVAILABLE">
+               <tabs>
+                  <Tab fx:id="pane3Tab1" onSelectionChanged="#pane3TabChange" text="%MasukkanSiswakeKelas.text">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Button fx:id="btnDeleteMasukkanSiswa" disable="true" layoutX="126.0" layoutY="144.0" mnemonicParsing="false" onAction="#deleteSiswaKelas" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="%Hapus.text" />
+                              <Button fx:id="btnAddMasukkanSiswa" layoutX="40.0" layoutY="144.0" mnemonicParsing="false" onAction="#addSiswaKelas" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="%Tambah.text" />
+                              <Label layoutX="40.0" layoutY="80.0" text="%Kelas.text" textFill="WHITE" />
+                              <Label layoutX="40.0" layoutY="44.0" text="%NamaSiswa.text" textFill="WHITE" />
+                              <TextField fx:id="txtNamaSiswa" layoutX="135.0" layoutY="40.0" onMouseClicked="#comboDetail" style="-fx-border-color: #65705e;" />
+                              <JFXComboBox fx:id="comboBoxKelas1" layoutX="135.0" layoutY="76.0" onMouseClicked="#comboDetail" prefHeight="25.0" prefWidth="153.0" />
+                              <Button fx:id="btnResetSiswa1" layoutX="212.0" layoutY="144.0" mnemonicParsing="false" onAction="#resetPane3" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="%Ulang.text" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab fx:id="pane3Tab2" onSelectionChanged="#pane3TabChange" text="%InputSiswa.text">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="473.0" prefWidth="315.0">
+                           <children>
+                              <Label layoutX="29.0" layoutY="28.0" text="%Nama.text" textFill="WHITE" />
+                              <TextField fx:id="txtAlamatInputSiswa" layoutX="158.0" layoutY="74.0" style="-fx-border-color: #65705e;" />
+                              <Label layoutX="31.0" layoutY="79.0" text="%Alamat.text" textFill="WHITE" />
+                              <TextField fx:id="txtNamaOrangtuaInputSiswa" layoutX="158.0" layoutY="119.0" style="-fx-border-color: #65705e;" />
+                              <Label layoutX="29.0" layoutY="124.0" text="%NamaOrangtua.text" textFill="WHITE" />
+                              <TextField fx:id="txtNamaInputSiswa" layoutX="158.0" layoutY="23.0" onMouseClicked="#comboDetail" style="-fx-border-color: #65705e;" />
+                              <Button fx:id="btnEditInputSiswa" disable="true" layoutX="118.0" layoutY="258.0" mnemonicParsing="false" onAction="#updateSiswa" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="%Ubah.text" />
+                              <Button fx:id="btnAddInputSiswa" layoutX="36.0" layoutY="258.0" mnemonicParsing="false" onAction="#addSiswa" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="%Tambah.text" />
+                              <Button fx:id="btnDeleteInputSiswa" disable="true" layoutX="196.0" layoutY="258.0" mnemonicParsing="false" onAction="#deleteSiswa" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="%Hapus.text" />
+                              <Button fx:id="btnCetakFormulirInputSiswa" layoutX="70.0" layoutY="324.0" mnemonicParsing="false" onAction="#printFormSiswa" prefHeight="55.0" prefWidth="110.0" stylesheets="@Style2.css" text="%CetakFormulir.text" />
+                              <Button fx:id="btnInputFormulirInputSiswa" layoutX="207.0" layoutY="324.0" mnemonicParsing="false" onAction="#inputFormSiswa" prefHeight="55.0" prefWidth="109.0" stylesheets="@Style2.css" text="%InputFormulir.text" />
+                              <Button fx:id="btnResetSiswa" layoutX="275.0" layoutY="258.0" mnemonicParsing="false" onAction="#resetPane3" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="%Ulang.text" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -158,32 +207,32 @@
             </TabPane>
             <TabPane fx:id="pane2" layoutX="10.0" layoutY="10.0" prefHeight="233.0" prefWidth="800.0" style="-fx-background-color: #474747;" stylesheets="@Style2.css" tabClosingPolicy="UNAVAILABLE">
                <tabs>
-                  <Tab fx:id="pane2Tab1" onSelectionChanged="#pane2TabChange" text="Input Mata Pelajaran Baru">
+                  <Tab fx:id="pane2Tab1" onSelectionChanged="#pane2TabChange" text="%InputMataPelajaranBaru.text">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Button fx:id="btnEditInputMataPelajaranBaru" disable="true" layoutX="128.0" layoutY="209.0" mnemonicParsing="false" onAction="#updateGuruMatpel" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="Edit" />
-                              <Button fx:id="btnAddInputMataPelajaranBaru" layoutX="40.0" layoutY="209.0" mnemonicParsing="false" onAction="#addGuruMatpel" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="Add" />
-                              <Label layoutX="40.0" layoutY="44.0" text="Nama Guru       : " textFill="WHITE" />
+                              <Button fx:id="btnEditInputMataPelajaranBaru" disable="true" layoutX="128.0" layoutY="209.0" mnemonicParsing="false" onAction="#updateGuruMatpel" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="%Ubah.text" />
+                              <Button fx:id="btnAddInputMataPelajaranBaru" layoutX="40.0" layoutY="209.0" mnemonicParsing="false" onAction="#addGuruMatpel" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="%Tambah.text" />
+                              <Label layoutX="40.0" layoutY="44.0" text="%NamaGuru.text" textFill="WHITE" />
                               <TextField fx:id="txtNamaGuruInputMataPelajaranBaru" layoutX="135.0" layoutY="40.0" onMouseClicked="#comboDetail" style="-fx-border-color: #65705e;" />
-                              <Label layoutX="40.0" layoutY="85.0" text="Mata Pelajaran  :" textFill="WHITE" />
+                              <Label layoutX="40.0" layoutY="85.0" text="%MataPelajaran.text" textFill="WHITE" />
                               <TextField fx:id="txtMataPelajaranInputMataPelajaranBaru" layoutX="135.0" layoutY="80.0" onMouseClicked="#comboDetail" style="-fx-border-color: #65705e;" />
-                              <Button fx:id="btnResetGuru" layoutX="211.0" layoutY="209.0" mnemonicParsing="false" onAction="#resetPane2" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="Reset" />
+                              <Button fx:id="btnResetGuru1" layoutX="211.0" layoutY="209.0" mnemonicParsing="false" onAction="#resetPane2" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="%Ulang.text" />
                            </children>
                         </AnchorPane>
                      </content>
                   </Tab>
-                  <Tab fx:id="pane2Tab2" onSelectionChanged="#pane2TabChange" text="Input Guru">
+                  <Tab fx:id="pane2Tab2" onSelectionChanged="#pane2TabChange" text="%InputGuru.text">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Button fx:id="btnEditInputGuru" disable="true" layoutX="135.0" layoutY="325.0" mnemonicParsing="false" onAction="#updateInputGuru" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="Edit" />
-                              <Button fx:id="btnAddInputGuru" layoutX="46.0" layoutY="325.0" mnemonicParsing="false" onAction="#addInputGuru" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="Add" />
-                              <Label layoutX="40.0" layoutY="44.0" text="Nama       : " textFill="WHITE" />
+                              <Button fx:id="btnEditInputGuru" disable="true" layoutX="135.0" layoutY="325.0" mnemonicParsing="false" onAction="#updateInputGuru" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="%Ubah.text" />
+                              <Button fx:id="btnAddInputGuru" layoutX="46.0" layoutY="325.0" mnemonicParsing="false" onAction="#addInputGuru" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="%Tambah.text" />
+                              <Label layoutX="40.0" layoutY="44.0" text="%Nama.text" textFill="WHITE" />
                               <TextField fx:id="txtNamaGuruInputGuru" layoutX="135.0" layoutY="40.0" style="-fx-border-color: #65705e;" />
-                              <Label layoutX="40.0" layoutY="85.0" text="Jabatan    :" textFill="WHITE" />
+                              <Label layoutX="40.0" layoutY="85.0" text="%Jabatan.text" textFill="WHITE" />
                               <TextField fx:id="txtJabatanInputGuru" layoutX="135.0" layoutY="80.0" style="-fx-border-color: #65705e;" />
-                              <Button fx:id="btnResetGuru" layoutX="218.0" layoutY="325.0" mnemonicParsing="false" onAction="#resetPane2" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="Reset" />
+                              <Button fx:id="btnResetGuru" layoutX="218.0" layoutY="325.0" mnemonicParsing="false" onAction="#resetPane2" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="%Ulang.text" />
                               <Label disable="true" layoutX="40.0" layoutY="125.0" prefHeight="17.0" prefWidth="83.0" text="Email             : " textFill="WHITE" visible="false" />
                               <TextField fx:id="txtEmailInputGuru" disable="true" layoutX="135.0" layoutY="121.0" style="-fx-border-color: #65705e;" visible="false" />
                               <Label disable="true" layoutX="40.0" layoutY="166.0" text="Password       : " textFill="WHITE" visible="false" />
@@ -194,47 +243,7 @@
                   </Tab>
                </tabs>
             </TabPane>
-            <TabPane fx:id="pane3" layoutX="10.0" layoutY="10.0" prefHeight="233.0" prefWidth="800.0" style="-fx-background-color: #474747;" stylesheets="@Style2.css" tabClosingPolicy="UNAVAILABLE">
-               <tabs>
-                  <Tab fx:id="pane3Tab1" onSelectionChanged="#pane3TabChange" text="Masukkan Siswa ke Kelas">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <Button fx:id="btnDeleteMasukkanSiswa" disable="true" layoutX="126.0" layoutY="144.0" mnemonicParsing="false" onAction="#deleteSiswaKelas" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="Delete" />
-                              <Button fx:id="btnAddMasukkanSiswa" layoutX="40.0" layoutY="144.0" mnemonicParsing="false" onAction="#addSiswaKelas" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="Add" />
-                              <Label layoutX="40.0" layoutY="80.0" text="Kelas                : " textFill="WHITE" />
-                              <Label layoutX="40.0" layoutY="44.0" text="Nama Siswa     : " textFill="WHITE" />
-                              <TextField fx:id="txtNamaSiswa" layoutX="135.0" layoutY="40.0" onMouseClicked="#comboDetail" style="-fx-border-color: #65705e;" />
-                              <JFXComboBox fx:id="comboBoxKelas1" layoutX="135.0" layoutY="76.0" onMouseClicked="#comboDetail" prefHeight="25.0" prefWidth="153.0" />
-                              <Button fx:id="btnResetSiswa" layoutX="212.0" layoutY="144.0" mnemonicParsing="false" onAction="#resetPane3" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="Reset" />
-                           </children>
-                        </AnchorPane>
-                     </content>
-                  </Tab>
-                  <Tab fx:id="pane3Tab2" onSelectionChanged="#pane3TabChange" text="Input Siswa">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="473.0" prefWidth="315.0">
-                           <children>
-                              <Label layoutX="29.0" layoutY="28.0" text="Nama                      : " textFill="WHITE" />
-                              <TextField fx:id="txtAlamatInputSiswa" layoutX="158.0" layoutY="74.0" style="-fx-border-color: #65705e;" />
-                              <Label layoutX="31.0" layoutY="79.0" text="Alamat                    :" textFill="WHITE" />
-                              <TextField fx:id="txtNamaOrangtuaInputSiswa" layoutX="158.0" layoutY="119.0" style="-fx-border-color: #65705e;" />
-                              <Label layoutX="29.0" layoutY="124.0" text="Nama  Orangtua     : " textFill="WHITE" />
-                              <TextField fx:id="txtNamaInputSiswa" layoutX="158.0" layoutY="23.0" onMouseClicked="#comboDetail" style="-fx-border-color: #65705e;" />
-                              <Button fx:id="btnEditInputSiswa" disable="true" layoutX="118.0" layoutY="258.0" mnemonicParsing="false" onAction="#updateSiswa" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="Edit" />
-                              <Button fx:id="btnAddInputSiswa" layoutX="36.0" layoutY="258.0" mnemonicParsing="false" onAction="#addSiswa" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="Add" />
-                              <Button fx:id="btnDeleteInputSiswa" disable="true" layoutX="196.0" layoutY="258.0" mnemonicParsing="false" onAction="#deleteSiswa" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="Delete" />
-                              <Button fx:id="btnCetakFormulirInputSiswa" layoutX="70.0" layoutY="324.0" mnemonicParsing="false" onAction="#printFormSiswa" prefHeight="55.0" prefWidth="110.0" stylesheets="@Style2.css" text="Cetak Formulir" />
-                              <Button fx:id="btnInputFormulirInputSiswa" layoutX="207.0" layoutY="324.0" mnemonicParsing="false" onAction="#inputFormSiswa" prefHeight="55.0" prefWidth="109.0" stylesheets="@Style2.css" text="Input Formulir" />
-                              <Button fx:id="btnResetSiswa" layoutX="275.0" layoutY="258.0" mnemonicParsing="false" onAction="#resetPane3" prefHeight="55.0" prefWidth="68.0" stylesheets="@Style2.css" text="Reset" />
-                           </children>
-                        </AnchorPane>
-                     </content>
-                  </Tab>
-               </tabs>
-            </TabPane>
          </children>
       </StackPane>
-      <Pane fx:id="paneStart" layoutX="199.0" layoutY="98.0" prefHeight="502.0" prefWidth="1001.0" style="-fx-background-color: #fff;" />
    </children>
 </AnchorPane>

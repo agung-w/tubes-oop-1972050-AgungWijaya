@@ -10,7 +10,10 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
@@ -21,9 +24,12 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -117,12 +123,30 @@ public class MainController {
      * ===================================ON ACTIONS=======================================
      */
     @FXML
-    private void toggle(){
+    private void toggle() throws IOException {
         if(btnToggle.isSelected()){
             btnToggle.setText("INA");
+            Locale l = new Locale("US");
+            LoadView(l);
+
         }else{
             btnToggle.setText("ENG");
+            Locale l = new Locale("ENG");
+            LoadView(l);
         }
+    }
+
+    public void LoadView(Locale locale) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("hello-view.fxml"));
+        loader.setResources(ResourceBundle.getBundle("bundle",locale));
+
+            Parent root  = loader.load();
+            Stage s = (Stage) btnToggle.getScene().getWindow();
+            s.setScene(new Scene(root));
+
+
+
     }
 
     @FXML
