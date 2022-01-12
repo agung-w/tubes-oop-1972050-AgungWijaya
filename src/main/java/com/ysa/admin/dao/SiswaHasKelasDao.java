@@ -4,6 +4,7 @@ import com.ysa.admin.entity.Siswa;
 import com.ysa.admin.entity.SiswaHasKelas;
 import com.ysa.admin.util.HibernateUtil;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -11,8 +12,9 @@ import org.hibernate.Transaction;
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import java.sql.CallableStatement;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SiswaHasKelasDao implements daoInterface<SiswaHasKelas>{
     @Override
@@ -66,6 +68,13 @@ public class SiswaHasKelasDao implements daoInterface<SiswaHasKelas>{
         criteriaQuery.from(SiswaHasKelas.class);
         List<SiswaHasKelas> list=session.createQuery(criteriaQuery).getResultList();
         session.close();
+        return FXCollections.observableArrayList(list);
+    }
+    public ObservableList kelasSiswa(int ids){
+        Session s=HibernateUtil.getSession();
+        List list=s.createStoredProcedureQuery("new_procedures").registerStoredProcedureParameter("id",Integer.class,ParameterMode.IN).setParameter("id",ids).
+                getResultList();
+        s.close();
         return FXCollections.observableArrayList(list);
     }
 }

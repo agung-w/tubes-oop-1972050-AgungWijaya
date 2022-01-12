@@ -7,11 +7,11 @@ module com.ysa {
     requires java.naming;
     requires jasperreports;
     requires com.jfoenix;
+    requires mysql.connector.java;
 
 
     opens com.ysa.admin to javafx.fxml;
     exports com.ysa.admin;
-    exports com.ysa.admin.controller;
     opens com.ysa.admin.controller to javafx.fxml;
     exports com.ysa.admin.entity;
 }

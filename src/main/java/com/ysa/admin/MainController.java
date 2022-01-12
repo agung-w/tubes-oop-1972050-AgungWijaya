@@ -1,9 +1,11 @@
-package com.ysa.admin.controller;
+package com.ysa.admin;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXToggleButton;
+import com.ysa.admin.controller.KelasDetailController;
 import com.ysa.admin.controller.tools.YSAalert;
 import com.ysa.admin.dao.*;
 import com.ysa.admin.entity.*;
+import com.ysa.admin.util.JDBCConnection;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -18,6 +20,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -26,10 +29,7 @@ import net.sf.jasperreports.view.JasperViewer;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -50,7 +50,24 @@ public class MainController {
     private Matpel selectedMatpel;
     private Siswa selectedSiswa;
     private Guru selectedGuru;
+    private Boolean toggle=true;
+    public void setToggle(boolean bln){
+        toggle=bln;
+        if(toggle){
+            btnToggle.setText("ENG");
+        }else{
+            btnToggle.setText("IND");
+            btnToggle.selectedProperty().set(true);
+        }
+    }
+    public int getSelectedid(){
+        return selectedid;
+    }
     public void initialize(){
+        btnCetakFormulirInputSiswa.setDisable(true);
+        btnInputFormulirInputSiswa.setDisable(true);
+        btnToggle.setText("ENG");
+        btnToggle.selectedProperty().set(false);
         btnEditPendaftaranJadwal.setDisable(true);
         tableMain.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener() {
             @Override
@@ -115,38 +132,50 @@ public class MainController {
             }
         });
     }
-    @FXML
-    private void modalAddKelas(){
 
-    }
     /**
      * ===================================ON ACTIONS=======================================
      */
     @FXML
-    private void toggle() throws IOException {
-        if(btnToggle.isSelected()){
-            btnToggle.setText("INA");
-            Locale l = new Locale("US");
-            LoadView(l);
-
-        }else{
-            btnToggle.setText("ENG");
-            Locale l = new Locale("ENG");
-            LoadView(l);
+    private void modalAddKelas() throws IOException {
+        Stage new_stage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("pageModal1.fxml"));
+        Locale locale=new Locale("ENG");
+        if (!btn4TahunAjaran.getText().equals("Add Class")){
+            locale=new Locale("US");
         }
+        fxmlLoader.setResources(ResourceBundle.getBundle("bundle",locale));
+        Parent root = fxmlLoader.load();
+        Scene scene = new Scene(root);
+        KelasDetailController controller= fxmlLoader.getController();
+        controller.setMainController(this);
+        new_stage.setTitle("");
+        new_stage.initModality(Modality.WINDOW_MODAL);
+        new_stage.initOwner(btn4TahunAjaran.getScene().getWindow());
+        new_stage.setScene(scene);
+        new_stage.show();
+    }
+    @FXML
+    private void toggle() throws IOException {
+        LoadView();
     }
 
-    public void LoadView(Locale locale) throws IOException {
+    public void LoadView() throws IOException {
+        Locale l = new Locale("ENG");
+
+        System.out.println(toggle);
+        if (toggle){
+            l = new Locale("US");
+        }
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("hello-view.fxml"));
-        loader.setResources(ResourceBundle.getBundle("bundle",locale));
-
-            Parent root  = loader.load();
-            Stage s = (Stage) btnToggle.getScene().getWindow();
-            s.setScene(new Scene(root));
-
-
-
+        loader.setResources(ResourceBundle.getBundle("bundle",l));
+        Parent root  = loader.load();
+        Stage s = (Stage) btnToggle.getScene().getWindow();
+        MainController controller=loader.getController();
+        controller.setToggle(!toggle);
+        s.setScene(new Scene(root));
     }
 
     @FXML
@@ -274,10 +303,10 @@ public class MainController {
         x.setUpdatedAt(t);
         if(siswaDao.updateData(x)==1){
             ysa.showAlertInf("Data Berhasil Di Ubah ","Success");
-            refreshData();
         }else{
             ysa.showAlertInf("Tidak ada perubahan data","No data Changed");
         }
+        refreshData();
         setTableToSiswa();
         resetPane3();
     }
@@ -305,10 +334,10 @@ public class MainController {
         x.setNamamatpel(txtMataPelajaranInputMataPelajaranBaru.getText());
         if(matpelDao.updateData(x)==1){
             ysa.showAlertInf("Data Berhasil Di Ubah ","Success");
-            refreshData();
         }else{
             ysa.showAlertInf("Tidak ada perubahan data","No data Changed");
         }
+        refreshData();
         setTableToMatpel();
         resetPane2();
     }
@@ -338,10 +367,10 @@ public class MainController {
         x.setUpdatedAt(t);
         if(guruDao.updateData(x)==1){
             ysa.showAlertInf("Data Berhasil Di Hapus ","Success");
-            refreshData();
         }else{
             ysa.showAlertInf("Tidak ada perubahan data","No data Changed");
         }
+        refreshData();
         setTableToGuru();
         resetPane2();
     }
@@ -381,19 +410,95 @@ public class MainController {
         resetPane1();
     }
     @FXML
-    private void detailKelas(){
-
+    private void detailKelas() throws IOException {
+        Stage new_stage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("pageModal1.fxml"));
+        Locale locale=new Locale("ENG");
+        if (!btn4TahunAjaran.getText().equals("Add Class")){
+            locale=new Locale("US");
+        }
+        fxmlLoader.setResources(ResourceBundle.getBundle("bundle",locale));
+        Parent root = fxmlLoader.load();
+        Scene scene = new Scene(root);
+        KelasDetailController controller= fxmlLoader.getController();
+        controller.setMainController(this);
+        new_stage.setTitle("");
+        new_stage.initModality(Modality.WINDOW_MODAL);
+        new_stage.initOwner(btn4TahunAjaran.getScene().getWindow());
+        new_stage.setScene(scene);
+        new_stage.show();
     }
     @FXML
     private void printDaftarHadir(){
+        Alert loading = ysa.showLoading();
+        loading.show();
+        Task<Void> task=new Task<Void>(){
+            @Override
+            protected Void call() {
+                JasperPrint jp;
+                Map param =new HashMap();
+                param.put("kid",selectedid);
+                try {
+                    jp= JasperFillManager.fillReport("report/DaftarMurid.jasper",
+                            param, JDBCConnection.getConnection());
+                    JasperViewer viewer=new JasperViewer(jp,false);
+                    viewer.setTitle("laporan");
+                    viewer.setVisible(true);
+                }catch (JRException e){
+                    System.out.println(e.getMessage());
+                }
+                return null;
+            }
+        };
+        ExecutorService exService= Executors.newCachedThreadPool();
+        exService.execute(task);
+        exService.shutdown();
+        boolean isFinished= false;
+        try {
+            isFinished = exService.awaitTermination(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (isFinished){
+            loading.close();
+        }
 
     }
     @FXML
-    private void printFormSiswa(){
-
+    private void printFormSiswa(){//laporan nilai
+        Alert loading = ysa.showLoading();
+        loading.show();
+        Task<Void> task=new Task<Void>(){
+            @Override
+            protected Void call() {
+                jadwalList.clear();jadwalList.addAll(jadwalDao.showData());
+                guruList.clear();guruList.addAll(guruDao.showData());
+                kelasList.clear();kelasList.addAll(kelasDao.showData());
+                matpelList.clear();matpelList.addAll(matpelDao.showData());
+                siswaList.clear();siswaList.addAll(siswaDao.showData());
+                siswaHasKelasList.clear();siswaHasKelasList.addAll(siswaHasKelasDao.showData());
+                jadwalList.clear();jadwalList.addAll(jadwalDao.showData());
+                usersList.clear();usersList.addAll(usersDao.showData());
+                kelasmatpelList.clear();kelasmatpelList.addAll(kelasmatpelDao.showData());
+                return null;
+            }
+        };
+        ExecutorService exService= Executors.newCachedThreadPool();
+        exService.execute(task);
+        exService.shutdown();
+        boolean isFinished= false;
+        try {
+            isFinished = exService.awaitTermination(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (isFinished){
+            loading.close();
+        }
     }
     @FXML
-    private void inputFormSiswa(){
+    private void inputFormSiswa(){//file io dari text gtuan
 
     }
 
@@ -645,6 +750,11 @@ public class MainController {
     private final MatpelDao matpelDao=new MatpelDao();
     private final SiswaDao siswaDao=new SiswaDao();
     private final SiswaHasKelasDao siswaHasKelasDao=new SiswaHasKelasDao();
+
+    public SiswaHasKelasDao getSiswaHasKelasDao() {
+        return siswaHasKelasDao;
+    }
+
     private final UsersDao usersDao=new UsersDao();
 
     /**
@@ -697,9 +807,7 @@ public class MainController {
         return jadwaldetList;
     }
 
-    /**
-     *
-     */
+
     /**
      * FXML
      */

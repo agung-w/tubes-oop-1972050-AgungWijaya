@@ -29,7 +29,6 @@ public class App extends Application {
             stage.setY(mouseEvent.getScreenY() - yOffset);
         });
 
-
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(new Scene(fxmlLoader));
         stage.setTitle("YSA Learning System");
